@@ -12,12 +12,12 @@ interface VoterAvatarProps {
   isCurrentUser?: boolean;
 }
 
-const avatarGradients = [
-  "from-teal-400 to-cyan-500",
-  "from-orange-400 to-rose-500",
-  "from-violet-400 to-purple-500",
-  "from-amber-400 to-orange-500",
-  "from-blue-400 to-indigo-500",
+const avatarColors = [
+  "bg-blue-600",
+  "bg-violet-600",
+  "bg-emerald-600",
+  "bg-amber-500",
+  "bg-cyan-600",
 ];
 
 export function VoterAvatar({
@@ -29,44 +29,33 @@ export function VoterAvatar({
   colorIndex,
   isCurrentUser,
 }: VoterAvatarProps) {
-  const gradientClass = avatarGradients[colorIndex % avatarGradients.length];
+  const colorClass = avatarColors[colorIndex % avatarColors.length];
 
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="participant-node"
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      className="flex flex-col items-center gap-2"
     >
       {/* Vote card above avatar */}
       <motion.div
-        initial={{ opacity: 0, y: 10, scale: 0.8 }}
+        initial={{ opacity: 0, y: 8, scale: 0.9 }}
         animate={{ 
           opacity: hasVoted ? 1 : 0,
-          y: hasVoted ? 0 : 10,
-          scale: hasVoted ? 1 : 0.8,
-          rotateY: isRevealed ? 0 : 180
+          y: hasVoted ? 0 : 8,
+          scale: hasVoted ? 1 : 0.9,
         }}
-        transition={{ 
-          duration: 0.4,
-          rotateY: { duration: 0.6, delay: 0.1 }
-        }}
+        transition={{ duration: 0.2 }}
         className={cn(
           "participant-card",
-          !isRevealed && "hidden-vote",
-          isRevealed && "revealed"
+          !isRevealed && "hidden-vote"
         )}
-        style={{ 
-          perspective: "1000px",
-          transformStyle: "preserve-3d"
-        }}
       >
         {isRevealed ? (
-          <span className="text-lg">{vote}</span>
+          <span className="text-base">{vote}</span>
         ) : (
-          <div className="w-full h-full flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/30 to-primary/10">
-            <HelpCircle className="h-5 w-5 text-primary/60" />
-          </div>
+          <HelpCircle className="h-4 w-4 text-muted-foreground" />
         )}
       </motion.div>
 
@@ -74,13 +63,13 @@ export function VoterAvatar({
       <div className="relative">
         <motion.div
           animate={hasVoted && !isRevealed ? { 
-            y: [0, -6, 0],
-            transition: { duration: 0.5, ease: "easeOut" }
+            y: [0, -4, 0],
           } : undefined}
+          transition={{ duration: 0.3 }}
           className={cn(
-            "participant-avatar w-14 h-14 text-sm text-white shadow-lg",
-            `bg-gradient-to-br ${gradientClass}`,
-            isCurrentUser && "ring-3 ring-white/50 ring-offset-2 ring-offset-background"
+            "participant-avatar w-11 h-11 text-xs text-white",
+            colorClass,
+            isCurrentUser && "ring-2 ring-primary ring-offset-2 ring-offset-background"
           )}
         >
           {initials}
@@ -90,34 +79,18 @@ export function VoterAvatar({
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-success text-white shadow-md"
+              className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-success text-white"
             >
-              <Check className="h-3 w-3" strokeWidth={3} />
+              <Check className="h-2.5 w-2.5" strokeWidth={3} />
             </motion.div>
           )}
         </motion.div>
-
-        {/* Current user indicator */}
-        {isCurrentUser && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="absolute -top-1 -right-1 text-sm"
-          >
-            ✨
-          </motion.div>
-        )}
       </div>
 
       {/* Name label */}
-      <motion.span 
-        className="max-w-[80px] truncate text-xs font-medium text-muted-foreground"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        {name.split(' ')[0]}
-      </motion.span>
+      <span className="max-w-[72px] truncate text-[11px] text-muted-foreground">
+        {isCurrentUser ? "You" : name.split(' ')[0]}
+      </span>
     </motion.div>
   );
 }

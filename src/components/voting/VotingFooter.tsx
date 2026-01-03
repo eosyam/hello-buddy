@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Eye, RotateCcw, ChevronRight, MessageSquare, Sparkles } from "lucide-react";
+import { Eye, RotateCcw, ChevronRight, MessageSquare } from "lucide-react";
 import { VotingCard } from "./VotingCard";
 
 interface VotingFooterProps {
@@ -31,33 +31,33 @@ export function VotingFooter({
 
   return (
     <motion.footer
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 }}
-      className="fixed bottom-0 left-0 right-0 z-50 pb-6"
+      transition={{ delay: 0.15 }}
+      className="fixed bottom-0 left-0 right-0 z-50 pb-5"
     >
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-3">
         {/* Action buttons */}
         <motion.div 
           className="flex items-center gap-2"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.25 }}
         >
           {isRevealed ? (
             <>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onDiscuss}
-                className="action-pill primary glow-success"
+                className="action-pill"
               >
                 <MessageSquare className="h-4 w-4" />
                 Discuss
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onReset}
                 className="action-pill"
               >
@@ -65,10 +65,10 @@ export function VotingFooter({
                 Revote
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onNextStory}
-                className="action-pill"
+                className="action-pill primary"
               >
                 Next Story
                 <ChevronRight className="h-4 w-4" />
@@ -76,22 +76,21 @@ export function VotingFooter({
             </>
           ) : (
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={onReveal}
               disabled={votedCount === 0}
-              className={`action-pill ${allVoted ? "primary glow-primary" : ""}`}
+              className={`action-pill ${allVoted ? "primary" : ""}`}
             >
               <Eye className="h-4 w-4" />
               Reveal Votes
-              {allVoted && <Sparkles className="h-3 w-3" />}
             </motion.button>
           )}
         </motion.div>
 
-        {/* Voting cards - Floating card deck */}
-        <div className="floating-panel-lg px-4 py-4 md:px-6">
-          <div className="flex items-center justify-center gap-1.5 md:gap-2">
+        {/* Voting cards */}
+        <div className="floating-panel-lg px-3 py-3 md:px-5">
+          <div className="flex items-center justify-center gap-1 md:gap-1.5">
             {FIBONACCI_VALUES.map((value, index) => (
               <VotingCard
                 key={value}
@@ -104,18 +103,19 @@ export function VotingFooter({
             ))}
           </div>
 
-          {/* Keyboard hint */}
-          <div className="flex items-center justify-center gap-4 mt-3 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <kbd className="kbd">1</kbd>
-              <kbd className="kbd">2</kbd>
-              <span>...</span>
-              <kbd className="kbd">0</kbd>
-              to vote
+          {/* Keyboard hints */}
+          <div className="flex items-center justify-center gap-3 mt-2.5 text-[10px] text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <kbd className="kbd">1</kbd>-<kbd className="kbd">0</kbd>
+              vote
             </span>
-            <span className="flex items-center gap-1.5">
+            <span className="flex items-center gap-1">
               <kbd className="kbd">R</kbd>
               reveal
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="kbd">B</kbd>
+              backlog
             </span>
           </div>
         </div>
