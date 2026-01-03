@@ -5,7 +5,8 @@ import { StorySidebar } from "./StorySidebar";
 import { VoterAvatar } from "./VoterAvatar";
 import { ConsensusPanel } from "./ConsensusPanel";
 import { VotingFooter } from "./VotingFooter";
-import { Menu, PanelLeft } from "lucide-react";
+import { HistoryPanel } from "./HistoryPanel";
+import { PanelLeft } from "lucide-react";
 
 interface Voter {
   id: string;
@@ -35,7 +36,7 @@ const demoVoters: Voter[] = [
   { id: "2", name: "Sarah Chen", initials: "SC", vote: 5, hasVoted: true },
   { id: "3", name: "Alex Martinez", initials: "AM", vote: undefined, hasVoted: false },
   { id: "4", name: "Jordan Park", initials: "JP", vote: 8, hasVoted: true },
-  { id: "5", name: "Taylor Swift", initials: "TS", vote: undefined, hasVoted: false },
+  { id: "5", name: "Taylor Kim", initials: "TK", vote: undefined, hasVoted: false },
 ];
 
 const FIBONACCI_VALUES = [0, 1, 2, 3, 5, 8, 13, 21, 40, "☕"];
@@ -47,6 +48,7 @@ export function VotingRoom() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | number | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const activeStory = stories.find((s) => s.id === activeStoryId);
   const votedCount = voters.filter((v) => v.hasVoted).length;
@@ -90,7 +92,6 @@ export function VotingRoom() {
     const currentIndex = stories.findIndex(s => s.id === activeStoryId);
     const nextStory = stories[currentIndex + 1];
     if (nextStory) {
-      // Save current story points
       setStories(prev => prev.map(s => 
         s.id === activeStoryId ? { ...s, points: Number(mostCommon) || undefined } : s
       ));
@@ -107,7 +108,6 @@ export function VotingRoom() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
-    // Number keys for voting
     const keyNum = parseInt(e.key);
     if (!isNaN(keyNum) && keyNum >= 0 && keyNum <= 9) {
       const value = FIBONACCI_VALUES[keyNum];
@@ -116,17 +116,18 @@ export function VotingRoom() {
       }
     }
 
-    // R for reveal
     if (e.key.toLowerCase() === 'r' && !isRevealed && votedCount > 0) {
       handleReveal();
     }
 
-    // B for backlog sidebar
     if (e.key.toLowerCase() === 'b') {
       setIsSidebarOpen(prev => !prev);
     }
 
-    // N for new story
+    if (e.key.toLowerCase() === 'h') {
+      setIsHistoryOpen(prev => !prev);
+    }
+
     if (e.key.toLowerCase() === 'n') {
       handleAddStory();
     }
@@ -148,16 +149,17 @@ export function VotingRoom() {
         sessionCode="RY49BS"
         participantCount={totalVoters}
         currentStory={activeStory ? { key: activeStory.key, title: activeStory.title } : undefined}
+        onOpenHistory={() => setIsHistoryOpen(true)}
       />
 
       {/* Toggle sidebar button */}
       <motion.button
-        initial={{ opacity: 0, x: -20 }}
+        initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsSidebarOpen(true)}
-        className="fixed left-4 top-20 z-30 toolbar-button bg-card border border-border shadow-md"
+        className="fixed left-4 top-20 z-30 toolbar-button bg-card border border-border shadow-sm"
       >
         <PanelLeft className="h-4 w-4" />
       </motion.button>
@@ -175,15 +177,21 @@ export function VotingRoom() {
         onClose={() => setIsSidebarOpen(false)}
       />
 
-      {/* Main content - Voting table */}
-      <main className="relative z-10 flex flex-col items-center justify-center h-full px-8 pt-24 pb-48">
-        {/* Voting table - Circular arrangement around center */}
-        <div className="relative flex flex-col items-center gap-12">
-          {/* Voters in arc arrangement */}
+      {/* History Panel */}
+      <HistoryPanel
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        sessions={[]}
+      />
+
+      {/* Main content */}
+      <main className="relative z-10 flex flex-col items-center justify-center h-full px-8 pt-24 pb-44">
+        <div className="relative flex flex-col items-center gap-10">
+          {/* Voters */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-wrap items-end justify-center gap-6 md:gap-10"
+            className="flex flex-wrap items-end justify-center gap-5 md:gap-8"
           >
             <AnimatePresence mode="popLayout">
               {voters.map((voter, index) => (
@@ -201,7 +209,7 @@ export function VotingRoom() {
             </AnimatePresence>
           </motion.div>
 
-          {/* Center - Consensus/Status Panel */}
+          {/* Consensus Panel */}
           <ConsensusPanel
             isRevealed={isRevealed}
             mostCommon={mostCommon}
@@ -212,7 +220,7 @@ export function VotingRoom() {
         </div>
       </main>
 
-      {/* Footer with voting cards */}
+      {/* Footer */}
       <VotingFooter
         votedCount={votedCount}
         totalVoters={totalVoters}

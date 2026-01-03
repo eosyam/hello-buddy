@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Copy, Users, Settings, ChevronDown, Check, Layers, Zap } from "lucide-react";
+import { Copy, Users, Settings, Check, History, Share2 } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { useState } from "react";
 
@@ -9,6 +9,7 @@ interface VotingHeaderProps {
   participantCount: number;
   currentStory?: { key: string; title: string };
   onOpenSettings?: () => void;
+  onOpenHistory?: () => void;
 }
 
 export function VotingHeader({
@@ -17,6 +18,7 @@ export function VotingHeader({
   participantCount,
   currentStory,
   onOpenSettings,
+  onOpenHistory,
 }: VotingHeaderProps) {
   const [copied, setCopied] = useState(false);
 
@@ -28,19 +30,18 @@ export function VotingHeader({
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between pointer-events-none"
     >
-      {/* Left: Session info toolbar */}
+      {/* Left: Session info */}
       <div className="toolbar pointer-events-auto">
         <div className="flex items-center gap-2 px-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70">
-            <Layers className="h-4 w-4 text-primary-foreground" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
+            M
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold leading-tight">{sessionName}</span>
-            <span className="text-[10px] text-muted-foreground leading-tight">Sprint Planning</span>
           </div>
         </div>
 
@@ -50,7 +51,7 @@ export function VotingHeader({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleCopyCode}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono font-medium bg-muted/50 hover:bg-muted transition-colors"
+          className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-mono bg-muted/50 hover:bg-muted transition-colors"
         >
           {sessionCode}
           {copied ? (
@@ -62,52 +63,62 @@ export function VotingHeader({
 
         <div className="toolbar-divider" />
 
-        <div className="flex items-center gap-1.5 px-2 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1 px-1.5 text-xs text-muted-foreground">
           <Users className="h-3.5 w-3.5" />
           <span className="font-medium">{participantCount}</span>
         </div>
       </div>
 
-      {/* Center: Current story (if any) */}
+      {/* Center: Current story */}
       {currentStory && (
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="toolbar pointer-events-auto"
         >
-          <div className="flex items-center gap-2 px-3 py-1">
-            <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-bold">
+          <div className="flex items-center gap-2 px-3 py-0.5">
+            <span className="story-badge">
               {currentStory.key}
             </span>
-            <span className="text-sm font-medium max-w-[200px] truncate">
+            <span className="text-sm font-medium max-w-[180px] truncate">
               {currentStory.title}
             </span>
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </div>
         </motion.div>
       )}
 
-      {/* Right: Actions toolbar */}
+      {/* Right: Actions */}
       <div className="toolbar pointer-events-auto">
-        <ThemeToggle />
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onOpenHistory}
+          className="toolbar-button"
+          title="Session History"
+        >
+          <History className="h-4 w-4" />
+        </motion.button>
 
-        <div className="toolbar-divider" />
+        <ThemeToggle />
 
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onOpenSettings}
           className="toolbar-button"
+          title="Settings"
         >
           <Settings className="h-4 w-4" />
         </motion.button>
 
+        <div className="toolbar-divider" />
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
         >
-          <Zap className="h-3 w-3" />
+          <Share2 className="h-3.5 w-3.5" />
           Invite
         </motion.button>
       </div>
