@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VoterAvatarProps {
@@ -12,11 +12,12 @@ interface VoterAvatarProps {
   isCurrentUser?: boolean;
 }
 
-const avatarColors = [
-  "bg-primary text-primary-foreground",
-  "bg-emphasis text-emphasis-foreground",
-  "bg-success text-success-foreground",
-  "bg-warning text-warning-foreground",
+const avatarGradients = [
+  "from-teal-400 to-cyan-500",
+  "from-orange-400 to-rose-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-400 to-orange-500",
+  "from-blue-400 to-indigo-500",
 ];
 
 export function VoterAvatar({
@@ -28,66 +29,95 @@ export function VoterAvatar({
   colorIndex,
   isCurrentUser,
 }: VoterAvatarProps) {
-  const colorClass = avatarColors[colorIndex % avatarColors.length];
+  const gradientClass = avatarGradients[colorIndex % avatarGradients.length];
 
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="flex flex-col items-center gap-2"
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="participant-node"
     >
-      {/* Vote indicator */}
-      {isRevealed && hasVoted && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-border bg-card font-bold shadow-soft"
-        >
-          {vote}
-        </motion.div>
-      )}
+      {/* Vote card above avatar */}
+      <motion.div
+        initial={{ opacity: 0, y: 10, scale: 0.8 }}
+        animate={{ 
+          opacity: hasVoted ? 1 : 0,
+          y: hasVoted ? 0 : 10,
+          scale: hasVoted ? 1 : 0.8,
+          rotateY: isRevealed ? 0 : 180
+        }}
+        transition={{ 
+          duration: 0.4,
+          rotateY: { duration: 0.6, delay: 0.1 }
+        }}
+        className={cn(
+          "participant-card",
+          !isRevealed && "hidden-vote",
+          isRevealed && "revealed"
+        )}
+        style={{ 
+          perspective: "1000px",
+          transformStyle: "preserve-3d"
+        }}
+      >
+        {isRevealed ? (
+          <span className="text-lg">{vote}</span>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/30 to-primary/10">
+            <HelpCircle className="h-5 w-5 text-primary/60" />
+          </div>
+        )}
+      </motion.div>
 
-      {/* Avatar */}
+      {/* Avatar circle */}
       <div className="relative">
         <motion.div
-          animate={hasVoted ? { y: [0, -4, 0] } : undefined}
-          transition={{ duration: 0.4 }}
+          animate={hasVoted && !isRevealed ? { 
+            y: [0, -6, 0],
+            transition: { duration: 0.5, ease: "easeOut" }
+          } : undefined}
           className={cn(
-            "relative flex h-12 w-12 items-center justify-center rounded-full text-sm font-semibold shadow-soft",
-            colorClass,
-            isCurrentUser && "ring-2 ring-primary ring-offset-2 ring-offset-background"
+            "participant-avatar w-14 h-14 text-sm text-white shadow-lg",
+            `bg-gradient-to-br ${gradientClass}`,
+            isCurrentUser && "ring-3 ring-white/50 ring-offset-2 ring-offset-background"
           )}
         >
           {initials}
+
+          {/* Voted checkmark */}
+          {hasVoted && !isRevealed && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-success text-white shadow-md"
+            >
+              <Check className="h-3 w-3" strokeWidth={3} />
+            </motion.div>
+          )}
         </motion.div>
 
-        {/* Voted indicator */}
-        {hasVoted && !isRevealed && (
+        {/* Current user indicator */}
+        {isCurrentUser && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-success text-success-foreground"
+            className="absolute -top-1 -right-1 text-sm"
           >
-            <Check className="h-3 w-3" />
+            ✨
           </motion.div>
-        )}
-
-        {/* Crown for host */}
-        {isCurrentUser && (
-          <motion.span
-            initial={{ rotate: -20, scale: 0 }}
-            animate={{ rotate: 0, scale: 1 }}
-            className="absolute -right-1 -top-1 text-lg"
-          >
-            👑
-          </motion.span>
         )}
       </div>
 
-      {/* Name */}
-      <span className="max-w-[80px] truncate text-xs text-muted-foreground">
-        {name}
-      </span>
+      {/* Name label */}
+      <motion.span 
+        className="max-w-[80px] truncate text-xs font-medium text-muted-foreground"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        {name.split(' ')[0]}
+      </motion.span>
     </motion.div>
   );
 }

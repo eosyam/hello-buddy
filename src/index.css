@@ -6,130 +6,146 @@
 
 @layer base {
   :root {
-    /* Warm, professional palette - Light mode */
-    --background: 40 30% 98%;
-    --foreground: 220 20% 15%;
+    /* Canvas-inspired minimal palette - Light */
+    --background: 220 15% 97%;
+    --foreground: 220 25% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    --card-foreground: 220 25% 12%;
+    --card-hover: 220 15% 98%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover-foreground: 220 25% 12%;
 
-    /* Teal accent - distinctive, not purple! */
-    --primary: 175 60% 40%;
+    /* Vibrant teal accent */
+    --primary: 172 66% 44%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 220 20% 25%;
+    --secondary: 220 14% 92%;
+    --secondary-foreground: 220 25% 25%;
 
-    --muted: 40 15% 92%;
-    --muted-foreground: 220 10% 50%;
+    --muted: 220 12% 90%;
+    --muted-foreground: 220 12% 45%;
 
-    --accent: 175 50% 94%;
-    --accent-foreground: 175 60% 30%;
+    --accent: 172 45% 92%;
+    --accent-foreground: 172 66% 32%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Warm coral for emphasis */
-    --emphasis: 15 85% 60%;
+    /* Coral warm accent */
+    --emphasis: 12 90% 62%;
     --emphasis-foreground: 0 0% 100%;
 
-    /* Success green */
-    --success: 155 60% 45%;
+    /* Success - Soft green */
+    --success: 152 55% 48%;
     --success-foreground: 0 0% 100%;
 
-    /* Warning amber */
-    --warning: 35 90% 55%;
-    --warning-foreground: 35 90% 15%;
+    /* Warning - Warm amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 92% 12%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 175 60% 40%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 172 66% 44%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Voting cards specific */
-    --card-hover: 175 60% 96%;
-    --card-selected: 175 60% 40%;
-    --card-selected-foreground: 0 0% 100%;
+    /* Canvas specific */
+    --canvas-bg: 220 20% 96%;
+    --canvas-dot: 220 15% 85%;
+    --canvas-grid: 220 15% 90%;
 
-    /* Avatar colors */
-    --avatar-1: 175 60% 45%;
-    --avatar-2: 15 85% 60%;
-    --avatar-3: 280 60% 55%;
-    --avatar-4: 45 90% 55%;
+    /* Floating panel */
+    --panel-shadow: 0 8px 32px -8px hsl(220 25% 12% / 0.12), 0 4px 12px -4px hsl(220 25% 12% / 0.08);
+    --panel-shadow-lg: 0 20px 50px -12px hsl(220 25% 12% / 0.18);
 
     /* Sidebar */
-    --sidebar-background: 40 25% 96%;
-    --sidebar-foreground: 220 20% 25%;
-    --sidebar-primary: 175 60% 40%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 25% 25%;
+    --sidebar-primary: 172 66% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 175 50% 94%;
-    --sidebar-accent-foreground: 175 60% 30%;
-    --sidebar-border: 40 20% 88%;
-    --sidebar-ring: 175 60% 40%;
+    --sidebar-accent: 172 45% 94%;
+    --sidebar-accent-foreground: 172 66% 32%;
+    --sidebar-border: 220 13% 90%;
+    --sidebar-ring: 172 66% 44%;
 
-    /* Glassmorphism */
-    --glass-bg: 0 0% 100% / 0.7;
-    --glass-border: 0 0% 100% / 0.3;
+    /* Vote colors */
+    --vote-0: 220 12% 55%;
+    --vote-1: 172 66% 44%;
+    --vote-2: 152 55% 48%;
+    --vote-3: 38 92% 50%;
+    --vote-5: 12 90% 62%;
+    --vote-8: 280 65% 55%;
+    --vote-13: 330 75% 55%;
+    --vote-21: 200 75% 50%;
+    --vote-40: 0 72% 51%;
+
+    /* Avatar palette */
+    --avatar-1: 172 66% 44%;
+    --avatar-2: 12 90% 62%;
+    --avatar-3: 280 65% 55%;
+    --avatar-4: 38 92% 50%;
+    --avatar-5: 200 75% 50%;
   }
 
   .dark {
-    /* Deep, warm dark mode */
-    --background: 220 25% 10%;
-    --foreground: 40 20% 95%;
+    /* Deep slate with warm undertones - Dark */
+    --background: 225 25% 8%;
+    --foreground: 220 15% 95%;
 
-    --card: 220 25% 14%;
-    --card-foreground: 40 20% 95%;
+    --card: 225 22% 12%;
+    --card-foreground: 220 15% 95%;
+    --card-hover: 225 22% 16%;
 
-    --popover: 220 25% 14%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 225 22% 12%;
+    --popover-foreground: 220 15% 95%;
 
-    --primary: 175 65% 50%;
-    --primary-foreground: 220 25% 10%;
+    --primary: 172 70% 48%;
+    --primary-foreground: 225 25% 8%;
 
-    --secondary: 220 20% 18%;
-    --secondary-foreground: 40 20% 90%;
+    --secondary: 225 18% 16%;
+    --secondary-foreground: 220 15% 85%;
 
-    --muted: 220 20% 20%;
-    --muted-foreground: 220 15% 60%;
+    --muted: 225 18% 18%;
+    --muted-foreground: 220 12% 55%;
 
-    --accent: 175 40% 20%;
-    --accent-foreground: 175 65% 70%;
+    --accent: 172 45% 18%;
+    --accent-foreground: 172 70% 65%;
 
-    --destructive: 0 65% 45%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --emphasis: 15 80% 55%;
+    --emphasis: 12 85% 58%;
     --emphasis-foreground: 0 0% 100%;
 
-    --success: 155 55% 45%;
+    --success: 152 50% 45%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 35 85% 50%;
-    --warning-foreground: 35 90% 10%;
+    --warning: 38 88% 48%;
+    --warning-foreground: 38 92% 10%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 20%;
-    --ring: 175 65% 50%;
+    --border: 225 18% 18%;
+    --input: 225 18% 18%;
+    --ring: 172 70% 48%;
 
-    --card-hover: 220 25% 18%;
-    --card-selected: 175 65% 50%;
-    --card-selected-foreground: 220 25% 10%;
+    /* Canvas */
+    --canvas-bg: 225 25% 6%;
+    --canvas-dot: 225 20% 18%;
+    --canvas-grid: 225 20% 12%;
 
-    --sidebar-background: 220 25% 12%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 175 65% 50%;
-    --sidebar-primary-foreground: 220 25% 10%;
-    --sidebar-accent: 175 40% 18%;
-    --sidebar-accent-foreground: 175 65% 70%;
-    --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 175 65% 50%;
+    --panel-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.4), 0 4px 12px -4px hsl(0 0% 0% / 0.3);
+    --panel-shadow-lg: 0 20px 50px -12px hsl(0 0% 0% / 0.5);
 
-    --glass-bg: 220 25% 14% / 0.8;
-    --glass-border: 220 20% 30% / 0.3;
+    /* Sidebar */
+    --sidebar-background: 225 22% 10%;
+    --sidebar-foreground: 220 15% 90%;
+    --sidebar-primary: 172 70% 48%;
+    --sidebar-primary-foreground: 225 25% 8%;
+    --sidebar-accent: 172 45% 16%;
+    --sidebar-accent-foreground: 172 70% 65%;
+    --sidebar-border: 225 18% 16%;
+    --sidebar-ring: 172 70% 48%;
   }
 }
 
@@ -149,84 +165,215 @@
 }
 
 @layer components {
-  /* Voting card styles */
-  .voting-card {
-    @apply relative flex items-center justify-center rounded-xl border-2 border-border bg-card text-card-foreground font-semibold transition-all duration-200 cursor-pointer select-none;
-    @apply hover:border-primary hover:bg-card-hover hover:-translate-y-1 hover:shadow-lg;
+  /* Canvas with dot pattern - Figma style */
+  .canvas {
+    @apply relative w-full h-full overflow-hidden;
+    background-color: hsl(var(--canvas-bg));
+    background-image: radial-gradient(circle, hsl(var(--canvas-dot)) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
-  .voting-card.selected {
-    @apply border-primary bg-primary text-primary-foreground shadow-xl;
-    @apply hover:bg-primary hover:border-primary;
+  /* Floating panel - Premium look */
+  .floating-panel {
+    @apply bg-card rounded-2xl border border-border;
+    box-shadow: var(--panel-shadow);
   }
 
-  /* Glass panel effect */
-  .glass-panel {
-    @apply backdrop-blur-md border rounded-2xl;
-    background: hsl(var(--glass-bg));
-    border-color: hsl(var(--glass-border));
+  .floating-panel-lg {
+    @apply bg-card rounded-3xl border border-border;
+    box-shadow: var(--panel-shadow-lg);
   }
 
-  /* Story item in sidebar */
-  .story-item {
-    @apply flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200;
-    @apply hover:bg-accent;
+  /* Toolbar - Figma style horizontal toolbar */
+  .toolbar {
+    @apply flex items-center gap-1 p-1.5 bg-card rounded-2xl border border-border;
+    box-shadow: var(--panel-shadow);
   }
 
-  .story-item.active {
-    @apply bg-accent border-l-4 border-primary;
+  .toolbar-button {
+    @apply flex items-center justify-center h-9 w-9 rounded-xl transition-all duration-150;
+    @apply text-muted-foreground hover:text-foreground hover:bg-secondary;
   }
 
-  /* Status pill */
-  .status-pill {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium;
+  .toolbar-button.active {
+    @apply bg-primary text-primary-foreground;
   }
 
-  /* Consensus ring animation */
-  @keyframes consensus-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+  .toolbar-divider {
+    @apply w-px h-6 bg-border mx-1;
   }
 
-  .consensus-ring {
-    animation: consensus-pulse 2s ease-in-out infinite;
+  /* Voting card - Poker style with depth */
+  .vote-card {
+    @apply relative flex flex-col items-center justify-center rounded-2xl border-2 border-border bg-card transition-all duration-200 cursor-pointer select-none overflow-hidden;
+    box-shadow: 0 2px 8px -2px hsl(var(--foreground) / 0.08);
   }
 
-  /* Avatar bounce on vote */
-  @keyframes avatar-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+  .vote-card:hover {
+    @apply border-primary -translate-y-2;
+    box-shadow: 0 12px 24px -8px hsl(var(--primary) / 0.25);
   }
 
-  .avatar-voted {
-    animation: avatar-bounce 0.5s ease-out;
+  .vote-card.selected {
+    @apply border-primary bg-primary text-primary-foreground -translate-y-3;
+    box-shadow: 0 16px 32px -8px hsl(var(--primary) / 0.35);
   }
 
-  /* Card flip animation */
-  @keyframes card-flip {
+  .vote-card-corner {
+    @apply absolute text-[10px] font-bold opacity-60;
+  }
+
+  .vote-card-corner.top {
+    @apply top-2 left-2;
+  }
+
+  .vote-card-corner.bottom {
+    @apply bottom-2 right-2 rotate-180;
+  }
+
+  /* User cursor/pointer - Real-time feel */
+  .user-cursor {
+    @apply absolute flex items-start gap-1 pointer-events-none transition-all duration-100;
+  }
+
+  .user-cursor-pointer {
+    @apply w-4 h-4;
+  }
+
+  .user-cursor-label {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium text-white whitespace-nowrap;
+  }
+
+  /* Participant node - Circle table feel */
+  .participant-node {
+    @apply relative flex flex-col items-center gap-2;
+  }
+
+  .participant-avatar {
+    @apply relative flex items-center justify-center rounded-full font-semibold transition-all duration-300;
+  }
+
+  .participant-card {
+    @apply absolute -top-16 flex items-center justify-center w-12 h-16 rounded-xl bg-card border-2 border-border font-bold shadow-lg;
+  }
+
+  .participant-card.hidden-vote {
+    @apply bg-gradient-to-br from-primary/20 to-primary/10;
+  }
+
+  .participant-card.revealed {
+    animation: flip-reveal 0.6s ease-out forwards;
+  }
+
+  @keyframes flip-reveal {
     0% { transform: rotateY(0deg); }
-    100% { transform: rotateY(180deg); }
+    50% { transform: rotateY(90deg); }
+    100% { transform: rotateY(0deg); }
   }
 
-  .card-flip {
-    animation: card-flip 0.6s ease-in-out;
+  /* Story card - Kanban style */
+  .story-card {
+    @apply flex items-center gap-3 p-3 rounded-xl bg-card border border-border transition-all duration-200 cursor-pointer;
+    @apply hover:border-primary/50 hover:shadow-md;
+  }
+
+  .story-card.active {
+    @apply border-primary bg-accent/50 shadow-md;
+  }
+
+  .story-badge {
+    @apply px-2 py-0.5 rounded-md text-xs font-semibold bg-muted text-muted-foreground;
+  }
+
+  .story-points {
+    @apply flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary text-sm font-bold;
+  }
+
+  /* Result display - Dramatic reveal */
+  .result-display {
+    @apply flex flex-col items-center justify-center p-8 rounded-3xl bg-gradient-to-br from-card to-card/80 border border-border;
+    box-shadow: var(--panel-shadow-lg);
+  }
+
+  .result-value {
+    @apply text-7xl font-bold;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--emphasis)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Quick action pill */
+  .action-pill {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200;
+    @apply bg-card border border-border hover:border-primary hover:shadow-md;
+  }
+
+  .action-pill.primary {
+    @apply bg-primary text-primary-foreground border-primary;
+    @apply hover:shadow-lg hover:shadow-primary/25;
+  }
+
+  /* Progress ring */
+  .progress-ring {
+    @apply relative flex items-center justify-center;
+  }
+
+  .progress-ring-bg {
+    @apply absolute inset-0 rounded-full border-4 border-muted;
+  }
+
+  .progress-ring-fill {
+    @apply absolute inset-0 rounded-full border-4 border-primary;
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+
+  /* Toast notification style */
+  .notification-toast {
+    @apply flex items-center gap-3 p-4 rounded-2xl bg-card border border-border;
+    box-shadow: var(--panel-shadow-lg);
+  }
+
+  /* Minimal scrollbar */
+  .minimal-scrollbar::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/30;
+  }
+
+  /* Kbd shortcut hint */
+  .kbd {
+    @apply inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-md bg-muted text-muted-foreground text-[10px] font-semibold;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 24px -4px hsl(var(--primary) / 0.4);
+  }
+
+  .glow-success {
+    box-shadow: 0 0 24px -4px hsl(var(--success) / 0.4);
   }
 }
 
 @layer utilities {
-  /* Gradient text */
   .gradient-text {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--emphasis)));
   }
 
-  /* Subtle shadow */
   .shadow-soft {
     box-shadow: 0 4px 20px -4px hsl(var(--foreground) / 0.1);
-  }
-
-  /* Glow effect */
-  .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
 }

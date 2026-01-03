@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Eye, MessageCircle, RotateCcw, ChevronRight } from "lucide-react";
+import { Eye, RotateCcw, ChevronRight, MessageSquare, Sparkles } from "lucide-react";
 import { VotingCard } from "./VotingCard";
 
 interface VotingFooterProps {
@@ -30,77 +30,45 @@ export function VotingFooter({
   const allVoted = votedCount === totalVoters && totalVoters > 0;
 
   return (
-    <footer className="border-t border-border bg-card/50 backdrop-blur-sm">
-      {/* Status bar */}
-      <div className="flex items-center justify-between border-b border-border px-6 py-3">
-        {/* Vote progress */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalVoters }).map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: i * 0.1 }}
-                className={`h-6 w-1.5 rounded-full transition-colors ${
-                  i < votedCount ? "bg-success" : "bg-muted"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-sm font-medium">
-            {votedCount}/{totalVoters}
-            <span className="ml-1.5 text-muted-foreground">voted</span>
-          </span>
-        </div>
-
-        {/* Status indicator */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className={`status-pill ${
-            isRevealed
-              ? "bg-success/10 text-success"
-              : allVoted
-              ? "bg-primary/10 text-primary"
-              : "bg-warning/10 text-warning"
-          }`}
+    <motion.footer
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      className="fixed bottom-0 left-0 right-0 z-50 pb-6"
+    >
+      <div className="flex flex-col items-center gap-4">
+        {/* Action buttons */}
+        <motion.div 
+          className="flex items-center gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
         >
-          <span className="h-2 w-2 rounded-full bg-current" />
-          {isRevealed
-            ? "Results revealed"
-            : allVoted
-            ? "Ready to reveal"
-            : "Waiting for votes"}
-        </motion.div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2">
           {isRevealed ? (
             <>
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onDiscuss}
-                className="flex items-center gap-2 rounded-xl bg-success px-4 py-2 text-sm font-medium text-success-foreground shadow-sm transition-all hover:shadow-md"
+                className="action-pill primary glow-success"
               >
-                <MessageCircle className="h-4 w-4" />
-                Discuss & align
+                <MessageSquare className="h-4 w-4" />
+                Discuss
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onReset}
-                className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-accent"
+                className="action-pill"
               >
                 <RotateCcw className="h-4 w-4" />
-                Reset
+                Revote
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onNextStory}
-                className="flex items-center gap-2 rounded-xl border-2 border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="action-pill"
               >
                 Next Story
                 <ChevronRight className="h-4 w-4" />
@@ -108,32 +76,50 @@ export function VotingFooter({
             </>
           ) : (
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onReveal}
               disabled={votedCount === 0}
-              className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`action-pill ${allVoted ? "primary glow-primary" : ""}`}
             >
               <Eye className="h-4 w-4" />
-              Reveal
+              Reveal Votes
+              {allVoted && <Sparkles className="h-3 w-3" />}
             </motion.button>
           )}
+        </motion.div>
+
+        {/* Voting cards - Floating card deck */}
+        <div className="floating-panel-lg px-4 py-4 md:px-6">
+          <div className="flex items-center justify-center gap-1.5 md:gap-2">
+            {FIBONACCI_VALUES.map((value, index) => (
+              <VotingCard
+                key={value}
+                value={value}
+                isSelected={selectedValue === value}
+                onClick={() => onSelectValue(value)}
+                disabled={isRevealed}
+                index={index}
+              />
+            ))}
+          </div>
+
+          {/* Keyboard hint */}
+          <div className="flex items-center justify-center gap-4 mt-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <kbd className="kbd">1</kbd>
+              <kbd className="kbd">2</kbd>
+              <span>...</span>
+              <kbd className="kbd">0</kbd>
+              to vote
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="kbd">R</kbd>
+              reveal
+            </span>
+          </div>
         </div>
       </div>
-
-      {/* Voting cards */}
-      <div className="flex items-center justify-center gap-2 px-6 py-4 md:gap-3">
-        {FIBONACCI_VALUES.map((value, index) => (
-          <VotingCard
-            key={value}
-            value={value}
-            isSelected={selectedValue === value}
-            onClick={() => onSelectValue(value)}
-            disabled={isRevealed}
-            index={index}
-          />
-        ))}
-      </div>
-    </footer>
+    </motion.footer>
   );
 }
