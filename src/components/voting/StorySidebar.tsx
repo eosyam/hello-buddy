@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { Plus, FileText, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, FileText, CheckCircle2, Circle, X, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Story {
@@ -15,6 +15,8 @@ interface StorySidebarProps {
   onAddStory: () => void;
   onSelectStory: (id: string) => void;
   activeStoryId?: string;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export function StorySidebar({
@@ -22,116 +24,134 @@ export function StorySidebar({
   onAddStory,
   onSelectStory,
   activeStoryId,
+  isOpen,
+  onClose,
 }: StorySidebarProps) {
+  const completedCount = stories.filter(s => s.points !== undefined).length;
+
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-border bg-sidebar">
-      {/* Header */}
-      <div className="border-b border-sidebar-border p-4">
-        <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-sidebar-foreground" />
-          <h2 className="font-semibold text-sidebar-foreground">Stories</h2>
-        </div>
-        <p className="mt-1 text-xs text-muted-foreground">
-          {stories.length} item{stories.length !== 1 ? "s" : ""}
-        </p>
-      </div>
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+          />
 
-      {/* Add story input */}
-      <div className="p-3">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onAddStory}
-          className="flex w-full items-center gap-2 rounded-xl border-2 border-dashed border-sidebar-border p-3 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-        >
-          <Plus className="h-4 w-4" />
-          Add a story...
-        </motion.button>
-      </div>
-
-      {/* Stories list */}
-      <div className="flex-1 overflow-y-auto p-3">
-        {stories.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-accent"
-            >
-              <Sparkles className="h-5 w-5 text-accent-foreground" />
-            </motion.div>
-            <p className="text-sm font-medium">No stories yet</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Add your first story to start estimating
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {stories.map((story, index) => (
-              <motion.div
-                key={story.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+          {/* Sidebar panel */}
+          <motion.aside
+            initial={{ x: -320, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -320, opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed left-4 top-20 bottom-24 z-50 w-80 floating-panel-lg flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-primary" />
+                <h2 className="font-semibold">Backlog</h2>
+                <span className="text-xs text-muted-foreground">
+                  {completedCount}/{stories.length}
+                </span>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="h-7 w-7 flex items-center justify-center rounded-lg hover:bg-muted transition-colors"
               >
-                <button
-                  onClick={() => onSelectStory(story.id)}
-                  className={cn(
-                    "story-item w-full text-left",
-                    activeStoryId === story.id && "active"
-                  )}
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">
-                        {story.key}
-                      </span>
-                      {activeStoryId === story.id && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                    <p className="mt-1 truncate text-sm font-medium">
-                      {story.title}
-                    </p>
-                  </div>
-                  {story.points !== undefined && (
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold text-primary">
-                      {story.points}
-                    </span>
-                  )}
-                </button>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
+                <X className="h-4 w-4" />
+              </motion.button>
+            </div>
 
-      {/* Quick tips */}
-      <div className="border-t border-sidebar-border p-4">
-        <p className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-          Quick Tips
-        </p>
-        <div className="space-y-1 text-xs text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <span className="flex h-4 w-4 items-center justify-center rounded bg-muted text-[10px]">
-              1
-            </span>
-            Add stories to estimate
-          </p>
-          <p className="flex items-center gap-2">
-            <span className="flex h-4 w-4 items-center justify-center rounded bg-muted text-[10px]">
-              2
-            </span>
-            Team votes on each
-          </p>
-          <p className="flex items-center gap-2">
-            <span className="flex h-4 w-4 items-center justify-center rounded bg-muted text-[10px]">
-              3
-            </span>
-            Reveal and discuss
-          </p>
-        </div>
-      </div>
-    </aside>
+            {/* Add story */}
+            <div className="p-3 border-b border-border">
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={onAddStory}
+                className="w-full flex items-center gap-2 p-3 rounded-xl border-2 border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Add story
+                <kbd className="kbd ml-auto">N</kbd>
+              </motion.button>
+            </div>
+
+            {/* Stories list */}
+            <div className="flex-1 overflow-y-auto minimal-scrollbar p-3 space-y-2">
+              <AnimatePresence mode="popLayout">
+                {stories.map((story, index) => (
+                  <motion.div
+                    key={story.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ delay: index * 0.05 }}
+                    layout
+                  >
+                    <button
+                      onClick={() => onSelectStory(story.id)}
+                      className={cn(
+                        "story-card w-full group",
+                        activeStoryId === story.id && "active"
+                      )}
+                    >
+                      {/* Drag handle */}
+                      <GripVertical className="h-4 w-4 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                      {/* Status icon */}
+                      {story.points !== undefined ? (
+                        <CheckCircle2 className="h-4 w-4 text-success shrink-0" />
+                      ) : (
+                        <Circle className="h-4 w-4 text-muted-foreground/50 shrink-0" />
+                      )}
+
+                      {/* Story info */}
+                      <div className="flex-1 min-w-0 text-left">
+                        <span className="story-badge">{story.key}</span>
+                        <p className="mt-1 text-sm font-medium truncate">
+                          {story.title}
+                        </p>
+                      </div>
+
+                      {/* Points badge */}
+                      {story.points !== undefined ? (
+                        <span className="story-points">{story.points}</span>
+                      ) : activeStoryId === story.id ? (
+                        <span className="story-points bg-primary/20 text-primary animate-pulse">
+                          ?
+                        </span>
+                      ) : null}
+                    </button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Progress footer */}
+            <div className="p-4 border-t border-border bg-muted/30">
+              <div className="flex items-center justify-between text-xs mb-2">
+                <span className="text-muted-foreground">Progress</span>
+                <span className="font-medium">{Math.round((completedCount / stories.length) * 100)}%</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(completedCount / stories.length) * 100}%` }}
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-success"
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                />
+              </div>
+            </div>
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

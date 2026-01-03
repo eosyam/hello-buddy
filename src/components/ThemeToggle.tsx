@@ -7,10 +7,10 @@ export function ThemeToggle() {
 
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-secondary-foreground transition-colors hover:bg-accent"
+      className="toolbar-button relative overflow-hidden"
       aria-label="Toggle theme"
     >
       <motion.div
@@ -19,7 +19,7 @@ export function ThemeToggle() {
           rotate: resolvedTheme === "dark" ? 0 : 180,
           scale: 1,
         }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
       >
         {resolvedTheme === "dark" ? (
           <Moon className="h-4 w-4" />

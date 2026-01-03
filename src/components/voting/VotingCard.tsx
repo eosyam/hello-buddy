@@ -12,34 +12,53 @@ interface VotingCardProps {
 
 export function VotingCard({ value, isSelected, onClick, disabled, index }: VotingCardProps) {
   const isCoffee = value === "☕";
+  const displayValue = isCoffee ? null : value;
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.3 }}
-      whileHover={!disabled ? { y: -8, scale: 1.05 } : undefined}
+      initial={{ opacity: 0, y: 30, rotateX: -15 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0 }}
+      transition={{ 
+        delay: index * 0.04, 
+        duration: 0.4,
+        type: "spring",
+        stiffness: 200
+      }}
+      whileHover={!disabled ? { 
+        y: -12, 
+        scale: 1.08,
+        transition: { duration: 0.2 }
+      } : undefined}
       whileTap={!disabled ? { scale: 0.95 } : undefined}
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "voting-card h-16 w-14 text-xl md:h-20 md:w-16 md:text-2xl",
-        isSelected && "selected glow-primary",
-        disabled && "opacity-50 cursor-not-allowed"
+        "vote-card h-20 w-14 md:h-24 md:w-16",
+        isSelected && "selected",
+        disabled && "opacity-40 cursor-not-allowed pointer-events-none"
       )}
     >
-      {isCoffee ? (
-        <Coffee className="h-5 w-5 md:h-6 md:w-6" />
-      ) : (
-        <span className="font-bold">{value}</span>
-      )}
+      {/* Corner values - poker card style */}
+      <span className="vote-card-corner top">
+        {isCoffee ? "☕" : value}
+      </span>
       
+      {/* Center value */}
+      <span className="text-2xl md:text-3xl font-bold">
+        {isCoffee ? <Coffee className="h-6 w-6 md:h-7 md:w-7" /> : displayValue}
+      </span>
+      
+      <span className="vote-card-corner bottom">
+        {isCoffee ? "☕" : value}
+      </span>
+
+      {/* Selection glow effect */}
       {isSelected && (
         <motion.div
-          layoutId="card-selection"
-          className="absolute inset-0 rounded-xl bg-primary/20"
+          layoutId="card-glow"
+          className="absolute inset-0 rounded-2xl bg-primary/10"
           initial={false}
-          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+          transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
         />
       )}
     </motion.button>
