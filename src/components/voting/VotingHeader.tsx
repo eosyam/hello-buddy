@@ -69,18 +69,18 @@ export function VotingHeader({
         </div>
       </div>
 
-      {/* Center: Current story */}
+      {/* Center: Current story - absolutely centered */}
       {currentStory && (
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="toolbar pointer-events-auto"
+          className="absolute left-1/2 -translate-x-1/2 toolbar pointer-events-auto"
         >
           <div className="flex items-center gap-2 px-3 py-0.5">
             <span className="story-badge">
               {currentStory.key}
             </span>
-            <span className="text-sm font-medium max-w-[180px] truncate">
+            <span className="text-sm font-medium max-w-[280px] truncate">
               {currentStory.title}
             </span>
           </div>
