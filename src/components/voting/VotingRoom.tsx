@@ -6,6 +6,8 @@ import { VoterAvatar } from "./VoterAvatar";
 import { ConsensusPanel } from "./ConsensusPanel";
 import { VotingFooter } from "./VotingFooter";
 import { HistoryPanel } from "./HistoryPanel";
+import { SessionSummaryModal } from "./SessionSummaryModal";
+import { DiscussPanel } from "./DiscussPanel";
 import { PanelLeft } from "lucide-react";
 
 interface Voter {
@@ -14,6 +16,7 @@ interface Voter {
   initials: string;
   vote?: string | number;
   hasVoted: boolean;
+  voteTime?: number; // timestamp when voted
 }
 
 interface Story {
@@ -49,6 +52,10 @@ export function VotingRoom() {
   const [selectedValue, setSelectedValue] = useState<string | number | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isDiscussOpen, setIsDiscussOpen] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [storyStartTime, setStoryStartTime] = useState<number>(Date.now());
+  const [firstVoterId, setFirstVoterId] = useState<string | null>(null);
 
   const activeStory = stories.find((s) => s.id === activeStoryId);
   const votedCount = voters.filter((v) => v.hasVoted).length;
@@ -68,10 +75,17 @@ export function VotingRoom() {
     : 0;
 
   const handleSelectValue = (value: string | number) => {
+    const now = Date.now();
     setSelectedValue(value);
+    
+    // Track first voter
+    if (!firstVoterId) {
+      setFirstVoterId("1");
+    }
+    
     setVoters((prev) =>
       prev.map((v) =>
-        v.id === "1" ? { ...v, vote: value, hasVoted: true } : v
+        v.id === "1" ? { ...v, vote: value, hasVoted: true, voteTime: now } : v
       )
     );
   };
@@ -83,8 +97,10 @@ export function VotingRoom() {
   const handleReset = () => {
     setIsRevealed(false);
     setSelectedValue(null);
+    setFirstVoterId(null);
+    setStoryStartTime(Date.now());
     setVoters((prev) =>
-      prev.map((v) => ({ ...v, vote: undefined, hasVoted: false }))
+      prev.map((v) => ({ ...v, vote: undefined, hasVoted: false, voteTime: undefined }))
     );
   };
 
@@ -97,6 +113,9 @@ export function VotingRoom() {
       ));
       setActiveStoryId(nextStory.id);
       handleReset();
+    } else {
+      // Session complete - show summary
+      setIsSummaryOpen(true);
     }
   };
 
@@ -204,6 +223,7 @@ export function VotingRoom() {
                   isRevealed={isRevealed}
                   colorIndex={index}
                   isCurrentUser={voter.id === "1"}
+                  isFirstVoter={firstVoterId === voter.id && !isRevealed}
                 />
               ))}
             </AnimatePresence>
@@ -230,7 +250,38 @@ export function VotingRoom() {
         onReveal={handleReveal}
         onReset={handleReset}
         onNextStory={handleNextStory}
-        onDiscuss={() => console.log("Discuss")}
+        onDiscuss={() => setIsDiscussOpen(true)}
+      />
+
+      {/* Discuss Panel */}
+      <DiscussPanel
+        isOpen={isDiscussOpen}
+        onClose={() => setIsDiscussOpen(false)}
+        currentUserId="1"
+        storyKey={activeStory?.key || ""}
+        storyTitle={activeStory?.title || ""}
+      />
+
+      {/* Session Summary Modal */}
+      <SessionSummaryModal
+        isOpen={isSummaryOpen}
+        onClose={() => setIsSummaryOpen(false)}
+        sessionName="Product Team Sprint 42"
+        voterStats={voters.map((v, i) => ({
+          id: v.id,
+          name: v.name,
+          initials: v.initials,
+          avgVoteTime: 2 + Math.random() * 5,
+          accuracyScore: 70 + Math.random() * 30,
+          consensusMatches: Math.floor(3 + Math.random() * 5),
+          totalVotes: 8,
+        }))}
+        sessionStats={{
+          totalStories: stories.length,
+          averageConsensus: consensus,
+          totalTime: 24,
+          participantCount: totalVoters,
+        }}
       />
     </div>
   );

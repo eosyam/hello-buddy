@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check, HelpCircle } from "lucide-react";
+import { Check, HelpCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VoterAvatarProps {
@@ -10,6 +10,7 @@ interface VoterAvatarProps {
   isRevealed: boolean;
   colorIndex: number;
   isCurrentUser?: boolean;
+  isFirstVoter?: boolean;
 }
 
 const avatarColors = [
@@ -28,6 +29,7 @@ export function VoterAvatar({
   isRevealed,
   colorIndex,
   isCurrentUser,
+  isFirstVoter,
 }: VoterAvatarProps) {
   const colorClass = avatarColors[colorIndex % avatarColors.length];
 
@@ -75,13 +77,24 @@ export function VoterAvatar({
           {initials}
 
           {/* Voted checkmark */}
-          {hasVoted && !isRevealed && (
+          {hasVoted && !isRevealed && !isFirstVoter && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-success text-white"
             >
               <Check className="h-2.5 w-2.5" strokeWidth={3} />
+            </motion.div>
+          )}
+
+          {/* First voter badge */}
+          {isFirstVoter && (
+            <motion.div
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-white shadow-lg"
+            >
+              <Zap className="h-3 w-3" strokeWidth={3} />
             </motion.div>
           )}
         </motion.div>

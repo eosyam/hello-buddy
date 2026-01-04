@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Copy, Users, Settings, Check, History, Share2 } from "lucide-react";
+import { Copy, Users, Settings, Check, History, Share2, Home } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface VotingHeaderProps {
   sessionName: string;
@@ -21,6 +22,7 @@ export function VotingHeader({
   onOpenHistory,
 }: VotingHeaderProps) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   const handleCopyCode = async () => {
     await navigator.clipboard.writeText(sessionCode);
@@ -36,6 +38,18 @@ export function VotingHeader({
     >
       {/* Left: Session info */}
       <div className="toolbar pointer-events-auto">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => navigate("/")}
+          className="toolbar-button"
+          title="Dashboard'a Dön"
+        >
+          <Home className="h-4 w-4" />
+        </motion.button>
+
+        <div className="toolbar-divider" />
+
         <div className="flex items-center gap-2 px-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-bold">
             M
