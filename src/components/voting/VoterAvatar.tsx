@@ -69,7 +69,7 @@ export function VoterAvatar({
           } : undefined}
           transition={{ duration: 0.3 }}
           className={cn(
-            "participant-avatar w-11 h-11 text-xs text-white",
+            "participant-avatar w-14 h-14 text-sm text-white",
             colorClass,
             isCurrentUser && "ring-2 ring-primary ring-offset-2 ring-offset-background"
           )}
