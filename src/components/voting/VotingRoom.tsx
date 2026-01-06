@@ -10,6 +10,8 @@ import { SessionSummaryModal } from "./SessionSummaryModal";
 import { DiscussPanel } from "./DiscussPanel";
 import { PanelLeft } from "lucide-react";
 
+import { type RoomRole } from "./RoleSelector";
+
 interface Voter {
   id: string;
   name: string;
@@ -17,6 +19,7 @@ interface Voter {
   vote?: string | number;
   hasVoted: boolean;
   voteTime?: number; // timestamp when voted
+  role: RoomRole;
 }
 
 interface Story {
@@ -35,11 +38,11 @@ const demoStories: Story[] = [
 ];
 
 const demoVoters: Voter[] = [
-  { id: "1", name: "Eray Buyukkorukcu", initials: "EB", vote: 8, hasVoted: true },
-  { id: "2", name: "Sarah Chen", initials: "SC", vote: 5, hasVoted: true },
-  { id: "3", name: "Alex Martinez", initials: "AM", vote: undefined, hasVoted: false },
-  { id: "4", name: "Jordan Park", initials: "JP", vote: 8, hasVoted: true },
-  { id: "5", name: "Taylor Kim", initials: "TK", vote: undefined, hasVoted: false },
+  { id: "1", name: "Eray Buyukkorukcu", initials: "EB", vote: 8, hasVoted: true, role: "scrum_master" },
+  { id: "2", name: "Sarah Chen", initials: "SC", vote: 5, hasVoted: true, role: "helper" },
+  { id: "3", name: "Alex Martinez", initials: "AM", vote: undefined, hasVoted: false, role: "participant" },
+  { id: "4", name: "Jordan Park", initials: "JP", vote: 8, hasVoted: true, role: "participant" },
+  { id: "5", name: "Taylor Kim", initials: "TK", vote: undefined, hasVoted: false, role: "participant" },
 ];
 
 const FIBONACCI_VALUES = [0, 1, 2, 3, 5, 8, 13, 21, 40, "☕"];
@@ -121,6 +124,16 @@ export function VotingRoom() {
 
   const handleAddStory = () => {
     console.log("Add story");
+  };
+
+  // Check if current user can change roles (only scrum_master can)
+  const currentUser = voters.find(v => v.id === "1");
+  const canChangeRoles = currentUser?.role === "scrum_master";
+
+  const handleRoleChange = (voterId: string, newRole: RoomRole) => {
+    setVoters(prev => prev.map(v => 
+      v.id === voterId ? { ...v, role: newRole } : v
+    ));
   };
 
   // Keyboard shortcuts
@@ -224,6 +237,9 @@ export function VotingRoom() {
                   colorIndex={index}
                   isCurrentUser={voter.id === "1"}
                   isFirstVoter={firstVoterId === voter.id && !isRevealed}
+                  role={voter.role}
+                  canChangeRoles={canChangeRoles}
+                  onRoleChange={(role) => handleRoleChange(voter.id, role)}
                 />
               ))}
             </AnimatePresence>
