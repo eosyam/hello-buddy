@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Check, HelpCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RoleBadge, RoleSelector, type RoomRole } from "./RoleSelector";
 
 interface VoterAvatarProps {
   name: string;
@@ -11,6 +12,9 @@ interface VoterAvatarProps {
   colorIndex: number;
   isCurrentUser?: boolean;
   isFirstVoter?: boolean;
+  role?: RoomRole;
+  canChangeRoles?: boolean;
+  onRoleChange?: (role: RoomRole) => void;
 }
 
 const avatarColors = [
@@ -30,6 +34,9 @@ export function VoterAvatar({
   colorIndex,
   isCurrentUser,
   isFirstVoter,
+  role = "participant",
+  canChangeRoles = false,
+  onRoleChange,
 }: VoterAvatarProps) {
   const colorClass = avatarColors[colorIndex % avatarColors.length];
 
@@ -97,13 +104,27 @@ export function VoterAvatar({
               <Zap className="h-3 w-3" strokeWidth={3} />
             </motion.div>
           )}
+
+          {/* Role badge (Scrum Master or Helper) */}
+          {!isFirstVoter && <RoleBadge role={role} />}
         </motion.div>
       </div>
 
-      {/* Name label */}
-      <span className="max-w-[72px] truncate text-[11px] text-muted-foreground">
-        {isCurrentUser ? "You" : name.split(' ')[0]}
-      </span>
+      {/* Name and role selector */}
+      <div className="flex flex-col items-center gap-1">
+        <span className="max-w-[72px] truncate text-[11px] text-muted-foreground">
+          {isCurrentUser ? "You" : name.split(' ')[0]}
+        </span>
+        {canChangeRoles && onRoleChange && (
+          <RoleSelector
+            currentRole={role}
+            onRoleChange={onRoleChange}
+            canChangeRole={canChangeRoles}
+            voterName={name}
+            isCurrentUser={isCurrentUser || false}
+          />
+        )}
+      </div>
     </motion.div>
   );
 }
